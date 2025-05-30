@@ -12,10 +12,8 @@ public static class ServiceExtension
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         services
-            .AddScoped<IUserService, UserService>()
-            .AddScoped<ILiteraryWord, LiteraryWordService>()
-            .AddScoped<IDialectalWord, DialectalWordService>()
-            .AddScoped<IDialect, DialectsService>();
+            .AddScoped<IUserService, UserService>();
+           
         
         return services;
     }
@@ -27,4 +25,6 @@ public static class ServiceExtension
 
         services.AddSingleton(config);
     }
+
+  
 }

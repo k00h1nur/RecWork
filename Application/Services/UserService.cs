@@ -31,8 +31,9 @@ public class UserService(
 
     public async Task<Result<SignUpResult>> SignIn(SignInRequest request)
     {
-        var user = await context.Users.FirstOrDefaultAsync(x => x.Phone== request.Phone && x.Password == request.Password);
-        if(user == null)
+        var user = await context.Users.FirstOrDefaultAsync(x =>
+            x.Phone == request.Phone && x.Password == request.Password);
+        if (user == null)
             return new ErrorModel(ErrorEnum.UserNotFound);
         return await GenerateTokenForUser(user);
     }

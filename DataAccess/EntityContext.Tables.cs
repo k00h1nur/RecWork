@@ -1,5 +1,4 @@
 ﻿using DataAccess.Schemas.Auth;
-using DataAccess.Schemas.Public;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;

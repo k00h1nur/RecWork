@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,9 +10,8 @@ public static class ServiceExtension
     public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
 
     {
-        //services.AddSqlite<EntityContext>("Data Source=database.db");
-        // services.AddDbContext<EntityContext>(options =>
-        //     options.UseSqlite(connectionString));
+        services.AddDbContext<EntityContext>(options =>
+            options.UseNpgsql(configuration.GetConnectionString("Database")));
 
         return services;
 

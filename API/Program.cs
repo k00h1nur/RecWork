@@ -1,32 +1,78 @@
-namespace API;
 
-public class Program
+using API.Extensions;
+using NLog;
+using NLog.Web;
+
+
+var logger = LogManager
+    .Setup()
+    .LoadConfigurationFromFile("nlog.config")
+    .GetCurrentClassLogger();
+
+try
 {
-    public static void Main(string[] args)
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Logging.ClearProviders();
+    builder.Host.UseNLog();
+
+    ServiceExtension.RegisterMapsterConfiguration();
+    builder.Services
+        .AddAuthentication(builder.Configuration)
+        .RegisterServices(builder.Configuration);
+
+    builder.Services.AddCors(options =>
     {
-        var builder = WebApplication.CreateBuilder(args);
+        options.AddPolicy("AllowAll",
+            builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+    });
 
-        // Add services to the container.
+    builder.Services.AddControllers();
 
-        builder.Services.AddControllers();
-        // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-        builder.Services.AddOpenApi();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGenWithJwtTokenHeaders();
 
-        var app = builder.Build();
+    // Enable serving static files from wwwroot folder
+    builder.Services.AddDirectoryBrowser();
 
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-        }
+    // Configure static file options
+    builder.Services.Configure<StaticFileOptions>(options =>
+    {
+        options.ServeUnknownFileTypes = true; // Serve all file types
+    });
 
-        app.UseHttpsRedirection();
+    Application.Extensions.ServiceExtension.ConfigureValidator(builder.Services);
+    var app = builder.Build();
 
-        app.UseAuthorization();
-
-
-        app.MapControllers();
-
-        app.Run();
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
     }
+
+    app.UseHttpsRedirection();
+
+    app.UseCors("AllowAll");
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.Run();
+}
+catch (Exception ex)
+{
+    logger.Error(ex, "Application encountered a critical error.");
+    throw;
+}
+finally
+{
+    LogManager.Shutdown();
 }

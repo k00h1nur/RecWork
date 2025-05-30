@@ -2,6 +2,7 @@
 using Domain.Models.Infrastructure.Params;
 using Mapster;
 
+
 namespace Application.Mappers;
 
 public class GenerateTokenParamsMapper : IRegister
