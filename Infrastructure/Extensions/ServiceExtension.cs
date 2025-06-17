@@ -13,7 +13,6 @@ public static class ServiceExtension
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddScoped<IHttpClientService, HttpClientService>();
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         HttpContextExtension.Configure(services.BuildServiceProvider().GetRequiredService<IHttpContextAccessor>());
         

@@ -14,6 +14,6 @@ public class Entity
     [Column("updated_date")]
     public DateTime? UpdatedDate { get; set; }
 
-    [Column("status")]
-    public EntityStatus Status { get; set; }
+    [Column("state")]
+    public EntityStatus State { get; set; }
 }
