@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DataAccess.Enums;
 using DataAccess.Models;
 
 namespace DataAccess.Schemas.Public;
@@ -9,15 +10,15 @@ public class VacancySkill : Entity
 {
     [Required]
     [Column("vacancy_id")]
-    public int VacancyId { get; set; }
+    public Guid VacancyId { get; set; }
         
     [Required]
     [Column("skill_id")]
-    public int SkillId { get; set; }
+    public Guid SkillId { get; set; }
         
     [MaxLength(50)]
-    [Column("requirement_level", TypeName = "varchar(50)")]
-    public string RequirementLevel { get; set; } // Required, Preferred, Nice-to-have
+    [Column("requirement_level")]
+    public RequirementLevel RequirementLevel { get; set; }
         
     [Range(1, 10)]
     [Column("min_proficiency_level")]

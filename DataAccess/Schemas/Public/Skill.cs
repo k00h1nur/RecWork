@@ -10,11 +10,7 @@ public class Skill : Entity
     [MaxLength(100)]
     [Column("name", TypeName = "varchar(100)")]
     public string Name { get; set; } = null!;
-        
-    [MaxLength(50)]
-    [Column("category", TypeName = "varchar(50)")]
-    public string? Category { get; set; } // Programming, Framework, Tool, Soft Skill, etc.
-        
+    
     [MaxLength(500)]
     [Column("description", TypeName = "varchar(500)")]
     public string Description { get; set; }
